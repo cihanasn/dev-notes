@@ -380,14 +380,18 @@ Authentication → Flows
 👉 sağdan:
 
 ``` markdown
-Copy
+Duplicate
 ```
+
+<img width="1539" height="113" alt="image" src="https://github.com/user-attachments/assets/3fd0cb90-e8bc-4ba4-a720-8713765a11e5" />
 
 Örnek isim:
 
 ``` markdown
 browser-with-otp
 ```
+
+<img width="642" height="298" alt="image" src="https://github.com/user-attachments/assets/6d39ec54-2783-4d2e-bf36-b8288c171045" />
 
 ### Step ekle
 
@@ -403,8 +407,12 @@ Add step
 Türkçe OTP Doğrulama
 ```
 
+<img width="964" height="492" alt="image" src="https://github.com/user-attachments/assets/8d983051-55d1-45c4-8f67-bc5298cdb975" />
+
 ### Required yap
 - REQUIRED seç
+
+<img width="742" height="81" alt="image" src="https://github.com/user-attachments/assets/baedeba0-e232-42bf-b16a-b083b7bdc770" />
 
 ### Bind et
 Bindings → Browser Flow
