@@ -41,4 +41,9 @@ OTP plugin geliştirme teknolojileri
 
 ## Eclipse’te Maven Projesi Oluşturma
 
+``` markdown
+File
+ → New
+   → Maven Project
+```
 
