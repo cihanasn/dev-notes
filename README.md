@@ -120,5 +120,17 @@ com.cihan.keycloak.otp
 ```
 package oluştur.
 
+- src/main/java’ya sağ tık → New → Package
+- Package adı olarak: com.cihan.keycloak.otp yaz
+
+## İlk Class
+
+Bu class OTP kontrolünü yapacak.
+
+``` markdown
+OtpAuthenticator.java
+```
+
+
 
 
