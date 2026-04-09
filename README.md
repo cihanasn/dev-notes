@@ -29,3 +29,16 @@ password: admin
 ```
 
 ## Java ile OTP uygulaması
+
+OTP plugin geliştirme teknolojileri
+
+### Genelde şu stack kullanılır:
+
+- Java 17+
+- Maven
+- Keycloak SPI: Keycloak’ın tüm extension sistemi Java SPI (Service Provider Interface) üzerine kuruludur.
+- .jar plugin
+
+## Eclipse’te Maven Projesi Oluşturma
+
+
