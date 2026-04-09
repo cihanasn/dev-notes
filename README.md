@@ -191,5 +191,38 @@ mvn clean package
 target/keycloak-otp-authenticator-1.0.0.jar
 ```
 
+Bu dosya bizim plugin.
+
 <img width="1184" height="238" alt="image" src="https://github.com/user-attachments/assets/d4a87e31-8833-4105-bf9b-633636da1732" />
+
+## Jar’ı Keycloak’a koyma
+
+Docker container içine:
+
+``` markdown
+/opt/keycloak/providers
+```
+
+klasörüne koyacağız.
+
+### Container içine dosya kopyalama
+
+``` markdown
+docker cp target/keycloak-otp-authenticator-1.0.0.jar keycloak-test:/opt/keycloak/providers/
+```
+
+<img width="1423" height="63" alt="image" src="https://github.com/user-attachments/assets/e4855540-d238-4be7-9884-dd809d704962" />
+
+Container içine girip kontrol (opsiyonel)
+
+<img width="777" height="147" alt="image" src="https://github.com/user-attachments/assets/6c77c010-7648-4014-b094-73311212206d" />
+
+Sonra:
+
+``` markdown
+docker restart keycloak-test
+```
+
+<img width="626" height="73" alt="image" src="https://github.com/user-attachments/assets/1e4ae8e7-dc6b-44a6-a454-2b538b7872ea" />
+
 
