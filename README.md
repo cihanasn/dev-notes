@@ -123,6 +123,8 @@ package oluştur.
 - src/main/java’ya sağ tık → New → Package
 - Package adı olarak: com.cihan.keycloak.otp yaz
 
+<img width="368" height="408" alt="image" src="https://github.com/user-attachments/assets/86cd91cc-73c1-4261-a138-3937125f6376" />
+
 ## İlk Class
 
 Bu class OTP kontrolünü yapacak.
