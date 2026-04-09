@@ -133,6 +133,63 @@ Bu class OTP kontrolünü yapacak.
 OtpAuthenticator.java
 ```
 
+``` markdown
+package com.cihan.keycloak.otp;
 
+import org.keycloak.authentication.Authenticator;
+import org.keycloak.authentication.AuthenticationFlowContext;
+import org.keycloak.models.UserModel;
 
+public class OtpAuthenticator implements Authenticator {
+
+    @Override
+    public void authenticate(AuthenticationFlowContext context) {
+        System.out.println("OTP step started");
+    }
+
+    @Override
+    public void action(AuthenticationFlowContext context) {
+    }
+
+    @Override
+    public boolean requiresUser() {
+        return true;
+    }
+
+    @Override
+    public boolean configuredFor(org.keycloak.models.KeycloakSession session,
+                                 org.keycloak.models.RealmModel realm,
+                                 UserModel user) {
+        return true;
+    }
+
+    @Override
+    public void setRequiredActions(org.keycloak.models.KeycloakSession session,
+                                   org.keycloak.models.RealmModel realm,
+                                   UserModel user) {
+    }
+
+    @Override
+    public void close() {
+    }
+}
+```
+Şimdilik sadece OTP step başladı yazdırıyoruz.
+
+## Maven ile build
+
+<img width="849" height="131" alt="image" src="https://github.com/user-attachments/assets/d073e8ee-d1b6-4eb4-95f0-a35928d49912" />
+
+Terminalde proje klasöründe:
+
+``` markdown
+mvn clean package
+```
+çıktı:
+
+``` markdown
+target/keycloak-otp-authenticator-1.0.0.jar
+```
+
+<img width="1184" height="238" alt="image" src="https://github.com/user-attachments/assets/d4a87e31-8833-4105-bf9b-633636da1732" />
 
