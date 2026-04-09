@@ -46,4 +46,13 @@ File
  → New
    → Maven Project
 ```
+Sonra:
+
+``` markdown
+Create a simple project (skip archetype selection)
+```
+
+kutusunu işaretle ve Next.
+
+<img width="384" height="181" alt="image" src="https://github.com/user-attachments/assets/e988a87b-d798-4646-9bba-97fa4aff7ab1" />
 
