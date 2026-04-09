@@ -56,3 +56,56 @@ kutusunu işaretle ve Next.
 
 <img width="384" height="181" alt="image" src="https://github.com/user-attachments/assets/e988a87b-d798-4646-9bba-97fa4aff7ab1" />
 
+Proje Bilgileri
+
+Şöyle doldur:
+
+``` markdown
+Group Id: com.cihan.keycloak
+Artifact Id: keycloak-otp-authenticator
+Version: 1.0.0
+Packaging: jar
+```
+
+Finish.
+
+<img width="994" height="681" alt="image" src="https://github.com/user-attachments/assets/4d95d7aa-f9a1-42b7-88e0-617f36b9852f" />
+
+Eclipse şu yapıyı oluşturur:
+
+``` markdown
+keycloak-otp-authenticator
+ ├─ src/main/java
+ ├─ src/test/java
+ └─ pom.xml
+```
+### pom.xml içine Keycloak dependency ekleme
+
+**pom.xml** dosyasını aç ve içine şunu ekle.
+
+``` markdown
+<dependencies>
+
+    <dependency>
+        <groupId>org.keycloak</groupId>
+        <artifactId>keycloak-server-spi</artifactId>
+        <version>26.0.0</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.keycloak</groupId>
+        <artifactId>keycloak-server-spi-private</artifactId>
+        <version>26.0.0</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.keycloak</groupId>
+        <artifactId>keycloak-services</artifactId>
+        <version>26.0.0</version>
+    </dependency>
+
+</dependencies>
+```
+
+
+
