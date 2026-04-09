@@ -18,3 +18,14 @@ Sonra tarayıcıdan:
 ``` bash
 http://localhost:9090
 ```
+
+adresine girersin.
+
+Login:
+
+``` bash
+username: admin
+password: admin
+```
+
+## Java ile OTP uygulaması
