@@ -176,6 +176,132 @@ public class OtpAuthenticator implements Authenticator {
 ```
 Şimdilik sadece OTP step başladı yazdırıyoruz.
 
+``` markdown
+package com.cihan.keycloak.otp;
+
+import java.util.Collections;
+import java.util.List;
+
+import org.keycloak.authentication.Authenticator;
+import org.keycloak.authentication.AuthenticatorFactory;
+import org.keycloak.authentication.AuthenticationFlowContext;
+import org.keycloak.models.AuthenticationExecutionModel.Requirement;
+import org.keycloak.models.KeycloakSession;
+import org.keycloak.models.KeycloakSessionFactory;
+import org.keycloak.models.UserModel;
+import org.keycloak.provider.ProviderConfigProperty;
+
+public class OtpAuthenticatorFactory implements AuthenticatorFactory, Authenticator {
+
+    public static final String ID = "turkce-otp";
+
+    // ================= FACTORY =================
+
+    @Override
+    public Authenticator create(KeycloakSession session) {
+        return this;
+    }
+
+    @Override
+    public String getId() {
+        return ID;
+    }
+
+    @Override
+    public String getDisplayType() {
+        return "Türkçe OTP Doğrulama";
+    }
+
+    @Override
+    public String getHelpText() {
+        return "Kullanıcıya OTP doğrulama adımı ekler";
+    }
+
+    @Override
+    public String getReferenceCategory() {
+        return "otp";
+    }
+
+    @Override
+    public boolean isConfigurable() {
+        return false;
+    }
+
+    @Override
+    public Requirement[] getRequirementChoices() {
+        return new Requirement[]{
+                Requirement.REQUIRED,
+                Requirement.ALTERNATIVE,
+                Requirement.DISABLED
+        };
+    }
+
+    @Override
+    public boolean isUserSetupAllowed() {
+        return false;
+    }
+
+    @Override
+    public List<ProviderConfigProperty> getConfigProperties() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public void init(org.keycloak.Config.Scope config) {}
+
+    @Override
+    public void postInit(KeycloakSessionFactory factory) {}
+
+    @Override
+    public void close() {}
+
+    // ================= AUTHENTICATOR =================
+
+    @Override
+    public void authenticate(AuthenticationFlowContext context) {
+        System.out.println("Türkçe OTP adımı başladı");
+        context.success();
+    }
+
+    @Override
+    public void action(AuthenticationFlowContext context) {
+        context.success();
+    }
+
+    @Override
+    public boolean requiresUser() {
+        return true;
+    }
+
+    @Override
+    public boolean configuredFor(KeycloakSession session,
+                                  org.keycloak.models.RealmModel realm,
+                                  UserModel user) {
+        return true;
+    }
+
+    @Override
+    public void setRequiredActions(KeycloakSession session,
+                                   org.keycloak.models.RealmModel realm,
+                                   UserModel user) {
+    }
+}
+```
+
+### SPI file (ZORUNLU)
+
+``` markdown
+src/main/resources/META-INF/services/org.keycloak.authentication.AuthenticatorFactory
+```
+
+İçine:
+
+``` markdown
+com.cihan.keycloak.otp.OtpAuthenticatorFactory
+```
+
+<img width="1143" height="272" alt="image" src="https://github.com/user-attachments/assets/1984dedb-6114-4d2c-b729-160939e2341b" />
+
 ## Maven ile build
 
 <img width="849" height="131" alt="image" src="https://github.com/user-attachments/assets/d073e8ee-d1b6-4eb4-95f0-a35928d49912" />
