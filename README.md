@@ -220,7 +220,11 @@ Container içine girip kontrol (opsiyonel)
 Sonra:
 
 ``` markdown
-docker restart keycloak-test
+- docker exec -it keycloak-test /bin/bash
+- cd /opt/keycloak
+- bin/kc.sh build
+- exit
+- docker restart keycloak-test
 ```
 
 <img width="626" height="73" alt="image" src="https://github.com/user-attachments/assets/1e4ae8e7-dc6b-44a6-a454-2b538b7872ea" />
