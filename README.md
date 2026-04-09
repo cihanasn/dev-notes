@@ -369,5 +369,51 @@ Authentication
 
 <img width="1438" height="924" alt="image" src="https://github.com/user-attachments/assets/604b39ec-2662-4ebe-8c05-835626e64710" />
 
+### Admin panel:
+
+``` markdown
+Authentication → Flows
+```
+
+👉 “Browser” flow’u bul
+
+👉 sağdan:
+
+``` markdown
+Copy
+```
+
+Örnek isim:
+
+``` markdown
+browser-with-otp
+```
+
+### Step ekle
+
+Artık şuradan:
+
+``` markdown
+Add step
+```
+
+👉 senin OTP provider:
+
+``` markdown
+Türkçe OTP Doğrulama
+```
+
+### Required yap
+- REQUIRED seç
+
+### Bind et
+Bindings → Browser Flow
+
+👉 seç:
+
+``` markdown
+browser-with-otp
+```
+
 
 
