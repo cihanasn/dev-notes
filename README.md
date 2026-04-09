@@ -425,9 +425,9 @@ Bindings → Browser Flow
 browser-with-otp
 ```
 
-<img width="586" height="155" alt="image" src="https://github.com/user-attachments/assets/45ff8013-53f9-47c5-b996-67d196054313" />
-
 <img width="643" height="232" alt="image" src="https://github.com/user-attachments/assets/5a60097f-bc89-46b3-a836-99e5e6ce4702" />
+
+<img width="586" height="155" alt="image" src="https://github.com/user-attachments/assets/45ff8013-53f9-47c5-b996-67d196054313" />
 
 ``` bash
 docker run -d --name keycloak-test -p 9090:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:26.0 start-dev
