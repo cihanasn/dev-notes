@@ -106,6 +106,16 @@ keycloak-otp-authenticator
 
 </dependencies>
 ```
+Sonra Maven → Update Project yap.
+
+## Java Package oluştur
+
+src/main/java altında:
+
+``` markdown
+com.cihan.keycloak.otp
+```
+package oluştur.
 
 
 
