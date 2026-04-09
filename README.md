@@ -355,4 +355,19 @@ Sonra:
 
 <img width="626" height="73" alt="image" src="https://github.com/user-attachments/assets/1e4ae8e7-dc6b-44a6-a454-2b538b7872ea" />
 
+## Admin panelden flow'a ekleme
+
+Keycloak Admin Console:
+
+``` markdown
+Authentication
+   → Flows
+      → Browser
+         → Add step
+            → Türkçe OTP Doğrulama
+```
+
+<img width="1438" height="924" alt="image" src="https://github.com/user-attachments/assets/604b39ec-2662-4ebe-8c05-835626e64710" />
+
+
 
