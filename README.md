@@ -546,5 +546,219 @@ yapabilirsin.
 
 ## Bir sonraki adımda gerçek çalışan OTP Authenticator
 
+Önce hardcoded 123456 OTP ile çalışan tam bir flow yazıyorum.
+
+OtpAuthenticatorFactory.java — mevcut dosyanı tamamen bununla değiştir:
+
+``` markdown
+package com.cihan.keycloak.otp;
+
+import java.util.Collections;
+import java.util.List;
+
+import org.keycloak.authentication.Authenticator;
+import org.keycloak.authentication.AuthenticatorFactory;
+import org.keycloak.models.AuthenticationExecutionModel.Requirement;
+import org.keycloak.models.KeycloakSession;
+import org.keycloak.models.KeycloakSessionFactory;
+import org.keycloak.provider.ProviderConfigProperty;
+
+public class OtpAuthenticatorFactory implements AuthenticatorFactory {
+
+    public static final String ID = "turkce-otp";
+
+    @Override
+    public Authenticator create(KeycloakSession session) {
+        return new OtpAuthenticator();
+    }
+
+    @Override
+    public String getId() { return ID; }
+
+    @Override
+    public String getDisplayType() { return "Türkçe OTP Doğrulama"; }
+
+    @Override
+    public String getHelpText() { return "Email ile OTP doğrulama"; }
+
+    @Override
+    public String getReferenceCategory() { return "otp"; }
+
+    @Override
+    public boolean isConfigurable() { return false; }
+
+    @Override
+    public Requirement[] getRequirementChoices() {
+        return new Requirement[]{
+            Requirement.REQUIRED,
+            Requirement.ALTERNATIVE,
+            Requirement.DISABLED
+        };
+    }
+
+    @Override
+    public boolean isUserSetupAllowed() { return false; }
+
+    @Override
+    public List<ProviderConfigProperty> getConfigProperties() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public void init(org.keycloak.Config.Scope config) {}
+
+    @Override
+    public void postInit(KeycloakSessionFactory factory) {}
+
+    @Override
+    public void close() {}
+}
+```
+
+OtpAuthenticator.java — mevcut dosyanı tamamen bununla değiştir:
+
+``` markdown
+package com.cihan.keycloak.otp;
+
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.Response;
+
+import org.keycloak.authentication.AuthenticationFlowContext;
+import org.keycloak.authentication.AuthenticationFlowError;
+import org.keycloak.authentication.Authenticator;
+import org.keycloak.models.KeycloakSession;
+import org.keycloak.models.RealmModel;
+import org.keycloak.models.UserModel;
+
+public class OtpAuthenticator implements Authenticator {
+
+    private static final String HARDCODED_OTP = "123456";
+    private static final String OTP_FORM_TEMPLATE = "otp-form.ftl";
+
+    @Override
+    public void authenticate(AuthenticationFlowContext context) {
+        // Formu göster
+        Response response = context.form()
+            .createForm(OTP_FORM_TEMPLATE);
+        context.challenge(response);
+    }
+
+    @Override
+    public void action(AuthenticationFlowContext context) {
+        // Kullanıcının girdiği kodu al
+        MultivaluedMap<String, String> formData =
+            context.getHttpRequest().getDecodedFormParameters();
+        String enteredOtp = formData.getFirst("otp");
+
+        if (HARDCODED_OTP.equals(enteredOtp)) {
+            context.success();
+        } else {
+            Response response = context.form()
+                .setError("Hatalı OTP kodu. Lütfen tekrar deneyin.")
+                .createForm(OTP_FORM_TEMPLATE);
+            context.failureChallenge(AuthenticationFlowError.INVALID_CREDENTIALS, response);
+        }
+    }
+
+    @Override
+    public boolean requiresUser() { return true; }
+
+    @Override
+    public boolean configuredFor(KeycloakSession session, RealmModel realm, UserModel user) {
+        return true;
+    }
+
+    @Override
+    public void setRequiredActions(KeycloakSession session, RealmModel realm, UserModel user) {}
+
+    @Override
+    public void close() {}
+}
+```
+
+themes klasörü altında kendimiz oluşturacağız:
+
+``` markdown
+docker exec -it keycloak-test mkdir -p /opt/keycloak/themes/custom/login
+```
+
+Yeni dosya: otp-form.ftl
+Bu dosya Keycloak'ın theme klasörüne gidecek. Yolu: themes/custom/login/otp-form.ftl
+
+Container içindeki tam yol: /opt/keycloak/themes/custom/login/otp-form.ftl
+
+İçeriği:
+
+``` markdown
+<#import "template.ftl" as layout>
+<@layout.registrationLayout displayInfo=true; section>
+    <#if section = "header">
+        OTP Doğrulama
+    <#elseif section = "form">
+        <form action="${url.loginAction}" method="post">
+            <div class="form-group">
+                <label for="otp">OTP Kodunuzu Girin</label>
+                <input type="text" id="otp" name="otp"
+                       class="form-control"
+                       autofocus
+                       autocomplete="off"
+                       placeholder="6 haneli kod"/>
+            </div>
+
+            <#if message?has_content>
+                <div class="alert alert-error">
+                    ${message.summary}
+                </div>
+            </#if>
+
+            <div class="form-group">
+                <input type="submit" value="Doğrula" class="btn btn-primary btn-block"/>
+            </div>
+        </form>
+    </#if>
+</@layout.registrationLayout>
+```
+
+.ftl dosyasını container'a kopyalama komutu:
+
+``` markdown
+docker cp otp-form.ftl keycloak-test:/opt/keycloak/themes/custom/login/otp-form.ftl
+```
+
+<img width="1418" height="91" alt="image" src="https://github.com/user-attachments/assets/7ffea095-cc5c-4314-8f6b-f509ee75b10a" />
+
+``` markdown
+docker exec -it keycloak-test find /opt/keycloak -name "*.jar"
+/opt/keycloak/lib/lib/main/org.keycloak.keycloak-themes-26.0.8.jar
+```
+
+Base temalar bu jar içinde. Bizim otp-form.ftl dosyasını oraya koymak yerine, en temiz çözüm şu:
+Container içinde themes/custom/login klasörünü oluşturup theme.properties ile base'i extend etmek. Bunu şimdi tek komutla yapalım:
+
+Şimdi theme.properties dosyasını oluştur.
+
+``` markdown
+parent=base
+```
+
+``` markdown
+docker cp theme.properties keycloak-test:/opt/keycloak/themes/custom/login/theme.properties
+```
+
+<img width="793" height="66" alt="image" src="https://github.com/user-attachments/assets/0f62ad29-5d12-4a6c-a052-94d259ceea41" />
+
+Şimdi build + restart:
+
+``` markdown
+docker exec -it keycloak-test /bin/bash -c "cd /opt/keycloak && bin/kc.sh build"
+docker restart keycloak-test
+```
+Sonra Admin panelden: 
+
+``` markdown
+Realm Settings → Themes → Login Theme → custom
+```
+
+seç ve Save.
 
 
