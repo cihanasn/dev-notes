@@ -761,4 +761,5 @@ Realm Settings → Themes → Login Theme → custom
 
 seç ve Save.
 
+<img width="849" height="796" alt="image" src="https://github.com/user-attachments/assets/f9990fe6-ba4f-4fa4-a6d3-a41c1fe11d8e" />
 
