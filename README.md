@@ -507,4 +507,11 @@ OTP doğrulama
 Login success
 ```
 
+Eğer bunu tam yazarsan:
+
+SMS OTP
+Email OTP
+Google Authenticator
+
+yapabilirsin.
 
