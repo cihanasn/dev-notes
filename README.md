@@ -763,3 +763,23 @@ seç ve Save.
 
 <img width="849" height="796" alt="image" src="https://github.com/user-attachments/assets/f9990fe6-ba4f-4fa4-a6d3-a41c1fe11d8e" />
 
+``` markdown
+Cookie
+Kerberos  
+Identity Provider Redirector
+browser-with-otp forms (sub-flow)
+  ├── Username Password Form
+  └── Türkçe OTP Doğrulama
+```
+
+<img width="1047" height="931" alt="image" src="https://github.com/user-attachments/assets/68e1ba45-e590-4b1a-b31a-e757b226ddbd" />
+
+	http://localhost:9090/realms/master/account/
+
+<img width="411" height="93" alt="image" src="https://github.com/user-attachments/assets/ac79bae9-943f-4620-838a-0a9083ee9162" />
+
+
+
+ 
+
+
