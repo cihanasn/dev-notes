@@ -778,6 +778,7 @@ browser-with-otp forms (sub-flow)
 
 <img width="411" height="93" alt="image" src="https://github.com/user-attachments/assets/ac79bae9-943f-4620-838a-0a9083ee9162" />
 
+<img width="916" height="342" alt="image" src="https://github.com/user-attachments/assets/543f2b34-819a-413b-bda9-3f540c144215" />
 
 
  
