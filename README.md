@@ -133,6 +133,25 @@ package oluştur.
 
 Bu class OTP kontrolünü yapacak.
 
+Keycloak’ta login süreci Authentication Flow adı verilen bir pipeline’dır.
+Bu pipeline’a yeni bir adım eklemek için Authenticator yazılır.
+
+- authenticate() metodu: Bu metod login sırasında çalışır. Kullanıcı login olmaya çalıştığında Keycloak bu metodu çağırır. (OTP form göster.)
+- action() metodu: Bu metod kullanıcı OTP girdikten sonra çalışır. (Kullanıcı OTP girer.) Yani burada yapılması gereken şey: OTP doğru mu kontrol et
+- requiresUser() metodu: true demek: username/password login yapılmış olmalı
+Yani OTP sadece login sonrası çalışır.
+- configuredFor() metodu: Bu metod şunu kontrol eder: Bu kullanıcı için OTP aktif mi?
+Kullanıcının OTP ayarı var mı? Ama şu anda: return true, yani her kullanıcı için OTP var kabul ediyor.
+
+setRequiredActions() metodu:
+``` markdown
+Bu metod şunu yapar:
+kullanıcı OTP setup yapmadıysa
+OTP setup zorunlu yap
+Mesela: Google Authenticator setup
+Ama şu anda boş.
+```
+
 ``` markdown
 OtpAuthenticator.java
 ```
