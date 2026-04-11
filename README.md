@@ -211,6 +211,33 @@ public class OtpAuthenticator implements Authenticator {
 }
 ```
 Şimdilik sadece OTP step başladı yazdırıyoruz.
+Bu sınıf hem AuthenticatorFactory hem de Authenticator implement ediyor. Bu yüzden hem plugin’i tanımlıyor hem de çalıştırıyor.
+
+Normalde production projelerde bu ikisi ayrı sınıf olur. Ama burada basit olsun diye aynı sınıfa yazılmış.
+
+Şimdi şu sabite bakalım.
+
+``` markdown
+public static final String ID = "turkce-otp";
+```
+
+Bu plugin’in benzersiz kimliğidir. Keycloak plugin’i yüklediğinde bunu kullanır.
+Admin panelde flow eklerken aslında Keycloak şunu arar: turkce-otp
+
+create() metodu: Bu metod Keycloak login sırasında Authenticator instance üretir.
+Normalde şöyle olur:
+``` markdown
+return new OtpAuthenticator();
+```
+Ama burada sınıf zaten Authenticator olduğu için: return this
+
+getDisplayType() metodu: Bu admin panelde görünen isimdir.
+
+init() metodu: Keycloak plugin’i ilk yüklediğinde çalışır.
+
+postInit() metodu: Keycloak tamamen ayağa kalktıktan sonra çalışır. Plugin’ler arası bağlantı burada yapılabilir.
+
+close() metodu: Plugin kapatılırken çalışır. Resource cleanup yapılır.
 
 ``` markdown
 package com.cihan.keycloak.otp;
