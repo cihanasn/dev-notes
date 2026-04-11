@@ -143,7 +143,8 @@ Yani OTP sadece login sonrası çalışır.
 - configuredFor() metodu: Bu metod şunu kontrol eder: Bu kullanıcı için OTP aktif mi?
 Kullanıcının OTP ayarı var mı? Ama şu anda: return true, yani her kullanıcı için OTP var kabul ediyor.
 
-setRequiredActions() metodu:
+- setRequiredActions() metodu:
+
 ``` markdown
 Bu metod şunu yapar:
 kullanıcı OTP setup yapmadıysa
@@ -151,6 +152,18 @@ OTP setup zorunlu yap
 Mesela: Google Authenticator setup
 Ama şu anda boş.
 ```
+
+- close() metodu:
+
+``` markdown
+Bu metod resource cleanup için vardır.
+Mesela:
+db connection kapat
+cache temizle
+Ama çoğu plugin'de boş bırakılır.
+```
+
+Aslında şu anda hiç OTP yapmıyor.
 
 ``` markdown
 OtpAuthenticator.java
