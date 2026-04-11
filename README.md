@@ -2,6 +2,8 @@
 
 **Authenticator SPI (Kimlik Doğrulayıcı Hizmet Sağlayıcı Arayüzü)**, bir uygulamanın, kullanıcıların kimliğini doğrulama (authentication) yöntemini, uygulamanın temel kodunu değiştirmeye gerek kalmadan, esnek bir şekilde değiştirmesine veya yeni yöntemler eklemesine olanak tanıyan bir yazılım arayüzüdür.
 
+Bunu bir priz veya USB girişi gibi düşünebilirsiniz. Prizin şekli (SPI), hangi cihazı takarsanız takın (örneğin, telefon şarj aleti, saç kurutma makinesi) elektrik almasını sağlayan standarttır. İşte Authenticator SPI de bir uygulamanın kimlik doğrulama "prizi"dir.
+
 ``` bash
 docker run -d --name keycloak-test -p 9090:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:26.0 start-dev
 ```
