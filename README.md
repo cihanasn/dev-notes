@@ -509,9 +509,11 @@ Login success
 
 Eğer bunu tam yazarsan:
 
+``` markdown
 SMS OTP
 Email OTP
 Google Authenticator
+```
 
 yapabilirsin.
 
