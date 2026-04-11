@@ -481,5 +481,30 @@ sendOTP()
 showOTPForm()
 ```
 
+Sonra:
+
+``` markdown
+action()
+
+readOTP()
+validateOTP()
+loginSuccess()
+```
+
+``` markdown
+User login
+↓
+Authentication Flow
+↓
+OtpAuthenticator.authenticate()
+↓
+OTP ekranı
+↓
+OtpAuthenticator.action()
+↓
+OTP doğrulama
+↓
+Login success
+```
 
 
