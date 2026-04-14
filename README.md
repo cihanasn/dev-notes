@@ -780,7 +780,20 @@ browser-with-otp forms (sub-flow)
 
 <img width="916" height="342" alt="image" src="https://github.com/user-attachments/assets/543f2b34-819a-413b-bda9-3f540c144215" />
 
+**Keycloak'ta tema sistemi şöyle çalışıyor:**
+parent=base → En sade, CSS'siz iskelet tema. Sadece HTML yapısı var, hiç stil yok. Sen class yazsan bile karşılık gelen CSS yok, bu yüzden çirkin görünüyor.
+parent=keycloak → Keycloak'un kendi hazır teması. Login sayfası, butonlar, inputlar hepsi stillenmiş halde geliyor.
+theme.properties dosyasındaki parent=base satırında. Bunu parent=keycloak yapınca login sayfasıyla aynı şık görünüm gelecek.
 
- 
+``` markdown
+parent=keycloak
+```
+
+``` markdown
+docker cp theme.properties keycloak-test:/opt/keycloak/themes/custom/login/theme.properties
+docker exec -it keycloak-test /bin/bash -c "cd /opt/keycloak && bin/kc.sh build"
+docker restart keycloak-test
+```
+<img width="543" height="359" alt="image" src="https://github.com/user-attachments/assets/9c0614f6-66ad-4a1e-89ba-6e7c7647eead" />
 
 
