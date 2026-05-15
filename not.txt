@@ -1,0 +1,65 @@
+C:\Program Files\PostgreSQL\18\bin
+
+cmd.exe
+
+set PGPASSWORD=12345
+pg_dump -h postgresqldev.example.com -p 5432 -U postgres -d mydb --no-owner --no-acl --schema=demo_schema --inserts --exclude-table-data=nothing -f C:\Users\%USERNAME%\Desktop\demo_schema_backup.sql
+
+Bu komut PostgreSQL’de belirli bir schema’yı (demo_schema) yedeklemek için kullanılan pg_dump komutudur.
+
+Bağlantı bilgileri
+
+	-h postgresqldev.example.com
+	→ PostgreSQL sunucusunun adresi (host)
+	
+	-p 5432
+	→ PostgreSQL portu (default port 5432)
+	
+	-U postgres
+	→ Bağlanacak kullanıcı adı (postgres user)
+	
+	-d mydb
+	→ Yedek alınacak database adı
+
+Yedekleme kapsamı
+
+	--schema=demo_schema
+	→ Sadece demo_schema isimli schema yedeklenir
+	(diğer schema’lar dahil edilmez)
+	
+Yetki / sahiplik ayarları
+
+	--no-owner
+	→ Yedek restore edildiğinde orijinal sahip (owner) bilgilerini yazmaz
+	(başka bir ortamda restore ederken hata çıkmasını önler)
+	
+	--no-acl
+	→ GRANT / permission (yetki) bilgilerini yedeklemez
+	(daha “temiz” bir dump olur)
+	
+Data davranışı
+
+	--exclude-table-data=nothing
+	→ Aslında “hiçbir tabloyu data’dan hariç tutma” demek
+	yani:
+	👉 hem schema hem de tüm data alınır
+	
+Çıktı dosyası
+
+	-f C:\Users\%USERNAME%\Desktop\demo_schema_backup.sql
+	→ Yedeğin yazılacağı dosya yolu
+	→ Windows Desktop’a .sql dosyası oluşturur
+
+
+
+
+
+RESTORE
+
+C:\Program Files\PostgreSQL\18\bin
+
+Windows PowerShell
+
+set PGPASSWORD=09876
+psql -h postgresqlprod.example.com -p 5432 -U my_db_demo_schema_prod_user -d my_db -f C:\Users\%USERNAME%\Desktop\demo_schema_backup.sql
+
