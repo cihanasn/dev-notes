@@ -1041,7 +1041,7 @@ themes/
 </html>
 ```
 
-Text versiyonu da ekle: themes/<theme-name>/custom/email/text/otp-email.ftl
+Text versiyonu da ekle: themes/custom/email/text/otp-email.ftl
 
 İçerik:
 
