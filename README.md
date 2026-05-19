@@ -796,4 +796,14 @@ docker restart keycloak-test
 ```
 <img width="543" height="359" alt="image" src="https://github.com/user-attachments/assets/9c0614f6-66ad-4a1e-89ba-6e7c7647eead" />
 
+http://localhost:9090/realms/master/account buradan oluşturduğumuz kullanıcı ile OTP testi yapabilirsiniz.
+
+<img width="476" height="220" alt="image" src="https://github.com/user-attachments/assets/20d0620b-d546-45ff-8849-619143844955" />
+
+<img width="752" height="637" alt="image" src="https://github.com/user-attachments/assets/afe1c024-7a99-4c6d-9842-c9ccadeb7496" />
+
+
+
+
+
 
