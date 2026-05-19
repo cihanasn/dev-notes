@@ -846,6 +846,90 @@ Herhangi bir şey yazıp Create de, 16 haneli şifreyi kopyala ve Keycloak'taki 
 
 <img width="554" height="66" alt="image" src="https://github.com/user-attachments/assets/e388feaf-082f-490a-83ed-3a4dd20178fb" />
 
+Şimdi hardcoded OTP’yi kaldır.
 
+Bunu yap:
 
+``` markdown
+String otp = String.valueOf(
+    ThreadLocalRandom.current().nextInt(100000, 999999)
+);
+```
 
+Sonra session’a koy:
+
+``` markdown
+context.getAuthenticationSession()
+    .setAuthNote("emailOtp", otp);
+```
+
+Expire için:
+
+``` markdown
+context.getAuthenticationSession()
+    .setAuthNote("emailOtpExpiry",
+        String.valueOf(System.currentTimeMillis() + (5 * 60 * 1000)));
+```
+
+5 dakika.
+
+Mail gönderme kısmı:
+
+``` markdown
+import org.keycloak.email.EmailException;
+import org.keycloak.email.EmailTemplateProvider;
+```
+
+Sonra authenticate içinde:
+
+``` markdown
+    @Override
+    public void authenticate(AuthenticationFlowContext context) {
+    	
+        String otp = String.valueOf(
+            ThreadLocalRandom.current().nextInt(100000, 999999)
+        );
+        
+        context.getAuthenticationSession()
+        	.setAuthNote("emailOtp", otp);
+        
+        context.getAuthenticationSession()
+	        .setAuthNote("emailOtpExpiry",
+	            String.valueOf(System.currentTimeMillis() + (5 * 60 * 1000)));
+
+        UserModel user = context.getUser();
+        
+        try {
+
+            EmailTemplateProvider emailProvider =
+                context.getSession().getProvider(EmailTemplateProvider.class);
+
+            Map<String, Object> params = new HashMap<>();
+            params.put("otp", otp);
+            
+            emailProvider
+	            .setRealm(context.getRealm())
+	            .setUser(user)
+	            .send(
+	                "OTP Doğrulama Kodunuz",
+	                "otp-email.ftl",
+	                params
+	            );
+
+        } catch (EmailException e) {
+
+            context.failure(
+                AuthenticationFlowError.INTERNAL_ERROR
+            );
+
+            return;
+        }
+        
+        // Formu göster
+        Response response = context.form()
+            .createForm(OTP_FORM_TEMPLATE);
+        context.challenge(response);
+    }
+```
+
+setAuthNote, Keycloak'ın authentication session'ına geçici key-value veri saklamak için kullanılan bir metottur.
