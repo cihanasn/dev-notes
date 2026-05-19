@@ -1102,6 +1102,9 @@ Realm Settings
 
 <img width="731" height="555" alt="image" src="https://github.com/user-attachments/assets/24aa94de-d2be-4aed-aa0a-e0a8e096869b" />
 
+<img width="600" height="403" alt="image" src="https://github.com/user-attachments/assets/4ee5ee5f-b481-41a0-940e-d2986ae6669a" />
+
+
 
 
 
