@@ -802,7 +802,49 @@ http://localhost:9090/realms/master/account buradan oluşturduğumuz kullanıcı
 
 <img width="752" height="637" alt="image" src="https://github.com/user-attachments/assets/afe1c024-7a99-4c6d-9842-c9ccadeb7496" />
 
+**Random OTP üretme ve mail gönderme:**
 
+Keycloak zaten kendi SMTP altyapısını destekliyor. En güzeli direkt Keycloak’un mail sender API’sini kullanmak.
+
+Önce Keycloak admin panelden SMTP ayarla:
+
+Realm Settings
+
+→ Email
+
+Örneğin Gmail:
+
+``` markdown
+Host: smtp.gmail.com
+Port: 587
+Encryption: StartTLS
+Username: mail@gmail.com
+Password: app-password
+```
+
+Error! Failed to send email
+
+<img width="216" height="60" alt="image" src="https://github.com/user-attachments/assets/91896276-1c16-46ec-a1f9-ced96b7cb847" />
+
+Keycloak'ta SMTP hata detaylarını görmek için:
+
+<img width="995" height="787" alt="image" src="https://github.com/user-attachments/assets/253ad01f-0e58-41a8-bec5-b7b449a18cda" />
+
+Gmail artık normal şifre ile SMTP'ye izin vermiyor. Şunları yapman lazım:
+
+- Google hesabında 2FA aktif olmalı
+- myaccount.google.com/apppasswords adresinden App Password üret
+- Keycloak'ta şifre alanına bu 16 haneli kodu gir (boşluksuz)
+
+<img width="831" height="719" alt="image" src="https://github.com/user-attachments/assets/5a6eda87-702f-4c8d-98ff-24c8d30d7bb2" />
+
+Herhangi bir şey yazıp Create de, 16 haneli şifreyi kopyala ve Keycloak'taki Password alanına yapıştır. 
+
+<img width="614" height="547" alt="image" src="https://github.com/user-attachments/assets/feef911f-75be-4e44-afd1-e1ed1a186b0a" />
+
+<img width="686" height="343" alt="image" src="https://github.com/user-attachments/assets/3df84ee4-417c-4e0c-8456-61fe840f6eeb" />
+
+<img width="554" height="66" alt="image" src="https://github.com/user-attachments/assets/e388feaf-082f-490a-83ed-3a4dd20178fb" />
 
 
 
