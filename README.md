@@ -1009,7 +1009,7 @@ otp-email.ftl template’i gerekiyor.
 
 ``` markdown
 themes/
-└── your-theme/
+└── your-theme/custom/
     └── email/
         ├── messages/
         │   └── messages_tr.properties
@@ -1041,19 +1041,7 @@ themes/
 </html>
 ```
 
-``` markdown
-docker cp target/keycloak-otp-authenticator-1.0.0.jar keycloak-test:/opt/keycloak/providers/
-docker exec -it keycloak-test mkdir -p /opt/keycloak/themes/email/html
-docker exec -it keycloak-test mkdir -p /opt/keycloak/themes/email/messages
-docker exec -it keycloak-test mkdir -p /opt/keycloak/themes/email/text
-docker cp otp-email.ftl keycloak-test:/opt/keycloak/themes/email/html/otp-email.ftl
-docker cp messages_tr.properties keycloak-test:/opt/keycloak/themes/email/messages/messages_tr.properties
-docker cp text/otp-email.ftl keycloak-test:/opt/keycloak/themes/email/text/otp-email.ftl
-docker exec -it keycloak-test /bin/bash -c "cd /opt/keycloak && bin/kc.sh build"
-docker restart keycloak-test
-```
-
-Text versiyonu da ekle: themes/<theme-name>/email/text/otp-email.ftl
+Text versiyonu da ekle: themes/<theme-name>/custom/email/text/otp-email.ftl
 
 İçerik:
 
@@ -1069,11 +1057,54 @@ Bu işlemi siz yapmadıysanız dikkate almayınız.
 
 Düz metin, HTML tag yok — email istemcisi HTML desteklemiyorsa bu gösterilir.
 
+browser Bind flow yapmalısınız!
+
+<img width="1116" height="486" alt="image" src="https://github.com/user-attachments/assets/fbbf2f23-827f-4cf5-8669-5741948967fd" />
+
+``` markdown
+
+docker exec -it keycloak-test mkdir -p /opt/keycloak/themes/custom/email/html
+docker exec -it keycloak-test mkdir -p /opt/keycloak/themes/custom/email/messages
+docker exec -it keycloak-test mkdir -p /opt/keycloak/themes/custom/email/text
+docker cp otp-email.ftl keycloak-test:/opt/keycloak/themes/custom/email/html/otp-email.ftl
+docker cp messages_tr.properties keycloak-test:/opt/keycloak/themes/custom/email/messages/messages_tr.properties
+docker cp text/otp-email.ftl keycloak-test:/opt/keycloak/themes/custom/email/text/otp-email.ftl
+
+docker exec -it keycloak-test bash -c "cat > /opt/keycloak/themes/custom/email/theme.properties << 'EOF'
+parent=base
+EOF"
+
+# Eski JAR'ı sil
+docker exec -it keycloak-test rm -f /opt/keycloak/providers/keycloak-otp-authenticator-1.0.0.jar
+
+# Yeni JAR'ı kopyala
+docker cp target/keycloak-otp-authenticator-1.0.0.jar keycloak-test:/opt/keycloak/providers/
+
+# Build cache'ini temizle
+docker exec -it keycloak-test rm -rf /opt/keycloak/data/tmp/
+
+# Rebuild
+docker exec -it keycloak-test /bin/bash -c "cd /opt/keycloak && bin/kc.sh build"
+
+# Restart
+docker restart keycloak-test
+
+```
+
 Sonra realm’de theme seç:
 
 Realm Settings
 
 → Themes
 → Email Theme
+
+<img width="991" height="817" alt="image" src="https://github.com/user-attachments/assets/657d200b-0b50-40f6-b168-606136055003" />
+
+<img width="731" height="555" alt="image" src="https://github.com/user-attachments/assets/24aa94de-d2be-4aed-aa0a-e0a8e096869b" />
+
+
+
+
+
 
 
