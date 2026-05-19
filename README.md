@@ -933,3 +933,147 @@ Sonra authenticate içinde:
 ```
 
 setAuthNote, Keycloak'ın authentication session'ına geçici key-value veri saklamak için kullanılan bir metottur.
+
+``` markdown
+Kullanıcı login sayfasını açar
+        ↓
+Keycloak o browser için unique bir AuthenticationSession oluşturur
+(session ID cookie olarak browser'a verilir)
+        ↓
+authenticate()  → setAuthNote("emailOtp", "123456")  ← bu session'a yazılır
+        ↓
+Kullanıcı formu submit eder (aynı browser, aynı cookie)
+        ↓
+action()        → getAuthNote("emailOtp")  ← aynı session'dan okunur
+```
+
+Kısaca
+context.getAuthenticationSession() zaten o request'in sahibi olan kullanıcının session'ını döner. Sen ekstra bir "bu kim?" kontrolü yapmazsın, Keycloak bunu HTTP session/cookie mekanizmasıyla otomatik çözer.
+Farklı bir kullanıcı aynı anda login olsa bile onun ayrı bir AuthenticationSession'ı olur, notlar birbirine karışmaz.
+
+Sonra validate:
+
+``` markdown
+    @Override
+    public void action(AuthenticationFlowContext context) {
+        // Kullanıcının girdiği kodu al
+        MultivaluedMap<String, String> formData =
+            context.getHttpRequest().getDecodedFormParameters();
+        String enteredOtp = formData.getFirst("otp");
+
+        String sessionOtp =
+                context.getAuthenticationSession()
+                    .getAuthNote("emailOtp");
+        
+        String expiry =
+                context.getAuthenticationSession()
+                    .getAuthNote("emailOtpExpiry");
+ 
+        if (expiry == null ||
+            System.currentTimeMillis() > Long.parseLong(expiry)) {
+
+            Response response = context.form()
+                .setError("OTP süresi doldu")
+                .createForm(OTP_FORM_TEMPLATE);
+
+            context.failureChallenge(
+                AuthenticationFlowError.EXPIRED_CODE,
+                response
+            );
+
+            return;
+        }
+        
+        
+        if (sessionOtp != null &&
+            sessionOtp.equals(enteredOtp)) {
+
+            context.success();
+
+        } else {
+
+            Response response = context.form()
+                .setError("Hatalı OTP")
+                .createForm(OTP_FORM_TEMPLATE);
+
+            context.failureChallenge(
+                AuthenticationFlowError.INVALID_CREDENTIALS,
+                response
+            );
+        }
+    }
+```
+otp-email.ftl template’i gerekiyor.
+
+Şuraya koy:
+
+``` markdown
+themes/
+└── your-theme/
+    └── email/
+        ├── messages/
+        │   └── messages_tr.properties
+        └── html/
+            └── otp-email.ftl
+```
+
+Örnek:
+
+``` markdown
+<#import "template.ftl" as layout>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <p>Merhaba ${user.firstName!},</p>
+    
+    <p>Giriş doğrulama kodunuz:</p>
+    
+    <h2 style="letter-spacing: 4px; color: #333;">${otp}</h2>
+    
+    <p>Bu kod <strong>5 dakika</strong> geçerlidir.</p>
+    
+    <p>Eğer bu işlemi siz yapmadıysanız, bu e-postayı dikkate almayınız.</p>
+</body>
+</html>
+```
+
+``` markdown
+docker cp target/keycloak-otp-authenticator-1.0.0.jar keycloak-test:/opt/keycloak/providers/
+docker exec -it keycloak-test mkdir -p /opt/keycloak/themes/email/html
+docker exec -it keycloak-test mkdir -p /opt/keycloak/themes/email/messages
+docker exec -it keycloak-test mkdir -p /opt/keycloak/themes/email/text
+docker cp otp-email.ftl keycloak-test:/opt/keycloak/themes/email/html/otp-email.ftl
+docker cp messages_tr.properties keycloak-test:/opt/keycloak/themes/email/messages/messages_tr.properties
+docker cp text/otp-email.ftl keycloak-test:/opt/keycloak/themes/email/text/otp-email.ftl
+docker exec -it keycloak-test /bin/bash -c "cd /opt/keycloak && bin/kc.sh build"
+docker restart keycloak-test
+```
+
+Text versiyonu da ekle: themes/<theme-name>/email/text/otp-email.ftl
+
+İçerik:
+
+``` markdown
+Merhaba ${user.firstName!},
+
+Giriş doğrulama kodunuz: ${otp}
+
+Bu kod 5 dakika geçerlidir.
+
+Bu işlemi siz yapmadıysanız dikkate almayınız.
+```
+
+Düz metin, HTML tag yok — email istemcisi HTML desteklemiyorsa bu gösterilir.
+
+Sonra realm’de theme seç:
+
+Realm Settings
+
+→ Themes
+→ Email Theme
+
+
